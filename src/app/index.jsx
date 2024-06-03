@@ -14,7 +14,7 @@ export default function App() {
         queryFn: () => fetchExercises('muscle', 'biceps'),
     });
 
-    if (isLoading) return <ActivityIndicator />;
+    if (isLoading || !data) return <ActivityIndicator />;
     return (
         <View style={styles.container}>
             <FlatList
