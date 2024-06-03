@@ -1,14 +1,24 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, ActivityIndicator } from "react-native";
 import exercises from "../../assets/data/exercises.json";
 import ExerciseListItem from "../components/ExerciseListItem";
+import {
+    useQuery,
+    useQueryClient,
+} from '@tanstack/react-query'
+import { fetchExercises } from "../../api/exercises";
 
 export default function App() {
-    const exercise = exercises[0];
+    const { data, isLoading } = useQuery({
+        queryKey: ['exercises'],
+        queryFn: () => fetchExercises('muscle', 'biceps'),
+    });
+
+    if (isLoading) return <ActivityIndicator />;
     return (
         <View style={styles.container}>
             <FlatList
-                data={exercises}
+                data={data}
                 contentContainerStyle={{ gap: 10 }}
                 keyExtractor={(exercise, index) => exercise.name + index}
                 renderItem={({ item }) => <ExerciseListItem exercise={item} />}
