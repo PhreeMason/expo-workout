@@ -55,7 +55,7 @@ const fetchExercises = async (searchType, query) => {
     }
 
     const data = await response.json();
-    return data.exercises;
+    return data;
 };
 
 export { fetchExercises, MUSCLES, TYPES, DIFFICULTIES };
