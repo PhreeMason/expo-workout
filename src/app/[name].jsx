@@ -1,18 +1,30 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, Stack } from "expo-router";
 import exercises from "../../assets/data/exercises.json";
+import { fetchExercises } from "../../api/exercises";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ExerciseDetailsScreen() {
     const [expandInstructions, setExpandInstructions] = useState(false);
-    const params = useLocalSearchParams();
-    const exercise = exercises.find((exercise) => exercise.name === params.name);
+    const { name } = useLocalSearchParams();
+    const { data: exercise, isLoading, error } = useQuery({
+        queryKey: ["exercise", name],
+        queryFn: () => fetchExercises('name', name)
+    });
+
+    if (isLoading) return <ActivityIndicator  />;
+
+    if (error) return <Text>Network error making your request, try again later</Text>;
+
     if (!exercise) {
         return <Text>Exercise not found</Text>;
     }
-    const { name, type, muscle, equipment, instructions, difficulty } = exercise;
+
+    const { name: exerciseName, type, muscle, equipment, instructions, difficulty } = exercise[0];
     return (
         <ScrollView style={styles.container}>
+            {/* this should just be name */}
             <Stack.Screen options={{ title: name }} />
             <View style={styles.panel}>
                 <Text style={styles.exerciseName}>{name}</Text>

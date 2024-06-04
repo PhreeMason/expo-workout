@@ -9,12 +9,15 @@ import {
 import { fetchExercises } from "../../api/exercises";
 
 export default function App() {
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, error } = useQuery({
         queryKey: ['exercises'],
         queryFn: () => fetchExercises('muscle', 'biceps'),
     });
 
-    if (isLoading || !data) return <ActivityIndicator />;
+    if (isLoading) return <ActivityIndicator />;
+    
+    if(error) return <Text>Network error making your request, try again later</Text>;
+
     return (
         <View style={styles.container}>
             <FlatList
