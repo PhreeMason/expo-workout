@@ -4,6 +4,7 @@ import { useLocalSearchParams, Stack } from "expo-router";
 import exercises from "../../assets/data/exercises.json";
 import { fetchExercises } from "../../api/exercises";
 import { useQuery } from "@tanstack/react-query";
+import NewSetInput from "../components/NewSetInput";
 
 export default function ExerciseDetailsScreen() {
     const [expandInstructions, setExpandInstructions] = useState(false);
@@ -24,7 +25,6 @@ export default function ExerciseDetailsScreen() {
     const { name: exerciseName, type, muscle, equipment, instructions, difficulty } = exercise[0];
     return (
         <ScrollView style={styles.container}>
-            {/* this should just be name */}
             <Stack.Screen options={{ title: name }} />
             <View style={styles.panel}>
                 <Text style={styles.exerciseName}>{name}</Text>
@@ -44,6 +44,7 @@ export default function ExerciseDetailsScreen() {
                     style={styles.seeMore}>{expandInstructions ? "See less" : "See more"}
                 </Text>
             </View>
+            <NewSetInput />
         </ScrollView>
     );
 }
@@ -53,8 +54,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         padding: 10,
         borderRadius: 5,
+        marginBottom: 10,
     },
     container: {
+        flex: 1,
         padding: 10,
     },
     exerciseName: {
