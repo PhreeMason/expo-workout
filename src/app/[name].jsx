@@ -5,6 +5,7 @@ import exercises from "../../assets/data/exercises.json";
 import { fetchExercises } from "../../api/exercises";
 import { useQuery } from "@tanstack/react-query";
 import NewSetInput from "../components/NewSetInput";
+import SetsList from "../components/SetsList";
 
 export default function ExerciseDetailsScreen() {
     const [expandInstructions, setExpandInstructions] = useState(false);
@@ -45,6 +46,7 @@ export default function ExerciseDetailsScreen() {
                 </Text>
             </View>
             <NewSetInput />
+            <SetsList name={name} />
         </ScrollView>
     );
 }

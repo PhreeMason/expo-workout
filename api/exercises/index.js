@@ -1,4 +1,4 @@
-import { API_KEY } from "@env"
+import { API_NINJA_API_KEY } from "@env"
 
 const BASE_URL = "https://api.api-ninjas.com/v1/exercises";
 const MUSCLES = [
@@ -40,22 +40,28 @@ const createUrlFromParams = (searchType, query) => {
 }
 
 const fetchExercises = async (searchType, query) => {
-    const url = createUrlFromParams(searchType, query);
-    const response = await fetch(
-        url,
-        {
-            headers: {
-                "X-Api-Key": API_KEY,
-            },
+    try {
+        const url = createUrlFromParams(searchType, query);
+        const response = await fetch(
+            url,
+            {
+                headers: {
+                    "X-Api-Key": API_NINJA_API_KEY,
+                },
+            }
+        );
+    
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
         }
-    );
-
-    if (!response.ok) {
-        throw new Error("Network response was not ok");
+    
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+        return [];
     }
 
-    const data = await response.json();
-    return data;
 };
 
 export { fetchExercises, MUSCLES, TYPES, DIFFICULTIES };
